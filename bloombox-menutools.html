@@ -92,7 +92,7 @@
 
       <!-- filters -->
       <div class="menu-section filters">
-        <paper-button id="inStock" active="{{instock}}" toggles on-tap="toggleInStockOnly">In-Stock Only</paper-button>
+        <paper-button id="inStock" active="{{instock}}" toggles on-tap="_didToggleInStockOnly">In-Stock Only</paper-button>
       </div>
 
       <!-- display mode -->
@@ -105,22 +105,25 @@
   </template>
 
   <script>
-    Polymer({
+    Polymer.BloomboxMenutools = Polymer({
 
       is: 'bloombox-menutools',
 
       properties: {
         /**
-         * 
+         * Partner locations that can be selected for menu viewing/editing. This is
+         * an array of objects, where each object is a `location` passed in from the
+         * server.
          */
         locations: {
-          type: Object,
+          type: Array,
           value: true,
           notify: true
         },
 
         /**
-         *
+         * Boolean flag indicating that we only wish to see in-stock items in the
+         * menu viewer/editor.
          */
         instock: {
           type: Boolean,
@@ -130,7 +133,8 @@
         },
 
         /**
-         *
+         * Display mode setting for menu UI. Options are `list`, `cards`, and
+         * `slim`.
          */
         displayMode: {
           type: String,
@@ -141,14 +145,15 @@
       },
 
       /**
-       *
+       * UI responder that is executed when the user changes the state of the "show
+       * instock only" button.
        */
-      toggleInStockOnly: function() {
+      _didToggleInStockOnly: function() {
         this.fire("menu-instock-changed");
       },
 
       /**
-       *
+       * Activate a display mode where menu items are placed in a list-style UI.
        */
       activateListDisplayMode: function() {
         this.fire("menu-displaymode-changed");
@@ -162,7 +167,8 @@
       },
 
       /**
-       *
+       * Activate a display mode where menu items are placed in an expanded
+       * card-style UI.
        */
       activateSlimDisplayMode: function() {
         this.fire("menu-displaymode-changed");
@@ -177,7 +183,8 @@
       },
 
       /**
-       *
+       * Activate a display mode where menu items are placed in a full, naturally-
+       * flowed card style UI.
        */
       activateCardDisplayMode: function() {
         this.fire("menu-displaymode-changed");
