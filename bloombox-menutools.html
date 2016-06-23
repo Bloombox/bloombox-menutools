@@ -1,13 +1,107 @@
+
+<!--
+`<bloombox-menutools>` provides tools for filtering and editing menu entries.
+
+@group Bloombox Elements
+@element bloombox-menutools
+@demo demo/index.html
+@homepage bloombox.github.io
+-->
+
 <link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../iron-icon/iron-icon.html">
+<link rel="import" href="../iron-icons/iron-icons.html">
+<link rel="import" href="../paper-item/paper-item.html">
+<link rel="import" href="../paper-button/paper-button.html">
+<link rel="import" href="../paper-listbox/paper-listbox.html">
+<link rel="import" href="../paper-dropdown-menu/paper-dropdown-menu.html">
+<link rel="import" href="../bloombox-styles/bloombox-styles.html">
+
 
 <dom-module id="bloombox-menutools">
   <template>
-    <style>
+    <style is="custom-style" include="bloombox-styles">
       :host {
-        display: block;
+        margin-left: 1em;
+      }
+
+      :host .hidden {
+        display: none;
+      }
+
+      paper-button[active] {
+        background-color: #bada55;
+      }
+
+      .menu-root {
+        display: inline-block;
+        height: 65px;
+      }
+
+      .menu-section {
+        display: inline-block;
+        height: 65px;
+      }
+
+      .menu-section:last-child {
+        border-right: none;
+      }
+
+      #manageLocations {
+        position: relative;
+        margin-left: 20px;
+        margin-right: 40px;
+      }
+
+      .menu-section.filters {
+        position: relative;
+        margin-left: 20px;
+      }
+
+      .menu-section.display {
+        position: relative;
+        top: 3px;
+        margin-left: 20px;
+      }
+
+
+
+      paper-tab[link] a {
+        /* These mixins (from iron-flex-layout) center the link text. */
+        @apply(--layout-horizontal);
+        @apply(--layout-center-center);
+        color: #111;
+        text-decoration: none;
+        --paper-tabs-selection-bar-color: blue;
+        --paper-tab-ink: blue;
       }
     </style>
-    <h2>Hello [[prop1]]</h2>
+
+    <div class="menu-root">
+      <!-- context -->
+      <div class="menu-section context">
+        <paper-dropdown-menu label="Location" noink>
+          <paper-listbox class="dropdown-content" selected="0">
+            <template is="dom-repeat" items="{{locations}}">
+              <paper-item>{{item.label}}</paper-item>
+            </template>
+          </paper-listbox>
+        </paper-dropdown-menu>
+        <paper-button hidden="true" id="manageLocations" raised><iron-icon icon="store"></iron-icon>Manage Locations</paper-button>
+      </div>
+
+      <!-- filters -->
+      <div class="menu-section filters">
+        <paper-button id="inStock" active="{{instock}}" toggles on-tap="toggleInStockOnly">In-Stock Only</paper-button>
+      </div>
+
+      <!-- display mode -->
+      <div class="menu-section display hidden">
+        <paper-button id="displayModeSlim" on-tap="activateSlimDisplayMode" toggles><iron-icon icon="list"></iron-icon></paper-button>
+        <paper-button id="displayModeList" on-tap="activateListDisplayMode" active toggles><iron-icon icon="view-list"></iron-icon></paper-button>
+        <paper-button id="displayModeCards" on-tap="activateCardDisplayMode" toggles><iron-icon icon="dashboard"></iron-icon></paper-button>
+      </div>
+    </div>
   </template>
 
   <script>
@@ -16,12 +110,86 @@
       is: 'bloombox-menutools',
 
       properties: {
-        prop1: {
-          type: String,
-          value: 'bloombox-menutools',
+        /**
+         * 
+         */
+        locations: {
+          type: Object,
+          value: true,
+          notify: true
         },
+
+        /**
+         *
+         */
+        instock: {
+          type: Boolean,
+          value: true,
+          notify: true,
+          reflectToAttribute: true
+        },
+
+        /**
+         *
+         */
+        displayMode: {
+          type: String,
+          notify: true,
+          value: "list",
+          reflectToAttribute: true
+        }
       },
 
+      /**
+       *
+       */
+      toggleInStockOnly: function() {
+        this.fire("menu-instock-changed");
+      },
+
+      /**
+       *
+       */
+      activateListDisplayMode: function() {
+        this.fire("menu-displaymode-changed");
+        this.$.displayModeSlim.active = false;
+        this.$.displayModeList.active = true;
+        this.$.displayModeCards.active = false;
+        bloom.app.classList.remove("display-mode-cards");
+        bloom.app.classList.remove("display-mode-slim");
+        bloom.app.classList.add("display-mode-list");
+        this.set("displayMode", "normal");
+      },
+
+      /**
+       *
+       */
+      activateSlimDisplayMode: function() {
+        this.fire("menu-displaymode-changed");
+        this.$.displayModeSlim.active = true;
+        this.$.displayModeList.active = false;
+        this.$.displayModeCards.active = false;
+
+        bloom.app.classList.remove("display-mode-cards");
+        bloom.app.classList.remove("display-mode-list");
+        bloom.app.classList.add("display-mode-slim");
+        this.set("displayMode", "slim");
+      },
+
+      /**
+       *
+       */
+      activateCardDisplayMode: function() {
+        this.fire("menu-displaymode-changed");
+        this.$.displayModeSlim.active = false;
+        this.$.displayModeList.active = false;
+        this.$.displayModeCards.active = true;
+
+        bloom.app.classList.remove("display-mode-slim");
+        bloom.app.classList.remove("display-mode-list");
+        bloom.app.classList.add("display-mode-cards");
+        this.set("displayMode", "normal");
+      }
     });
   </script>
 </dom-module>
