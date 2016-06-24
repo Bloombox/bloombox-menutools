@@ -64,7 +64,9 @@
         margin-left: 20px;
       }
 
-
+      :host div.hidden {
+        display: none;
+      }
 
       paper-tab[link] a {
         /* These mixins (from iron-flex-layout) center the link text. */
@@ -81,9 +83,9 @@
       <!-- context -->
       <div class="menu-section context">
         <paper-dropdown-menu label="Location" noink>
-          <paper-listbox class="dropdown-content" selected="0">
+          <paper-listbox class="dropdown-content" selected="{{location}}" attr-for-selected="key">
             <template is="dom-repeat" items="{{locations}}">
-              <paper-item>{{item.label}}</paper-item>
+              <paper-item key="[[item.key]]">[[item.label]]</paper-item>
             </template>
           </paper-listbox>
         </paper-dropdown-menu>
@@ -96,7 +98,7 @@
       </div>
 
       <!-- display mode -->
-      <div class="menu-section display hidden">
+      <div class="hidden menu-section display hidden">
         <paper-button id="displayModeSlim" on-tap="activateSlimDisplayMode" toggles><iron-icon icon="list"></iron-icon></paper-button>
         <paper-button id="displayModeList" on-tap="activateListDisplayMode" active toggles><iron-icon icon="view-list"></iron-icon></paper-button>
         <paper-button id="displayModeCards" on-tap="activateCardDisplayMode" toggles><iron-icon icon="dashboard"></iron-icon></paper-button>
@@ -106,7 +108,6 @@
 
   <script>
     Polymer.BloomboxMenutools = Polymer({
-
       is: 'bloombox-menutools',
 
       properties: {
@@ -117,7 +118,14 @@
          */
         locations: {
           type: Array,
-          value: true,
+          notify: true
+        },
+
+        /**
+         * Provides the active, selected `location` key.
+         */
+        location: {
+          type: String,
           notify: true
         },
 
