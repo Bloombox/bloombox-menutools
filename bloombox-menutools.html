@@ -89,7 +89,6 @@
             </template>
           </paper-listbox>
         </paper-dropdown-menu>
-        <paper-button hidden="true" id="manageLocations" raised><iron-icon icon="store"></iron-icon>Manage Locations</paper-button>
       </div>
 
       <!-- filters -->
@@ -98,7 +97,7 @@
       </div>
 
       <!-- display mode -->
-      <div class="hidden menu-section display hidden">
+      <div class="menu-section display">
         <paper-button id="displayModeSlim" on-tap="activateSlimDisplayMode" toggles><iron-icon icon="list"></iron-icon></paper-button>
         <paper-button id="displayModeList" on-tap="activateListDisplayMode" active toggles><iron-icon icon="view-list"></iron-icon></paper-button>
         <paper-button id="displayModeCards" on-tap="activateCardDisplayMode" toggles><iron-icon icon="dashboard"></iron-icon></paper-button>
