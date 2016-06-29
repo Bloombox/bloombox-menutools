@@ -37,13 +37,12 @@
       }
 
       .menu-root {
-        display: inline-block;
-        height: 65px;
+        display: flex;
+        justify-content: center;
       }
 
       .menu-section {
-        display: inline-block;
-        height: 65px;
+        display: flex;
       }
 
       .menu-section:last-child {
@@ -63,7 +62,6 @@
 
       .menu-section.display {
         position: relative;
-        top: 3px;
         margin-left: 20px;
       }
 
@@ -85,7 +83,7 @@
     <div class="menu-root">
       <!-- context -->
       <div class="menu-section context">
-        <paper-dropdown-menu label="Location" noink>
+        <paper-dropdown-menu label="Location" noink no-label-float>
           <paper-listbox class="dropdown-content" selected="{{location}}" attr-for-selected="key">
             <template is="dom-repeat" items="{{locations}}">
               <paper-item key="[[item.key]]">[[item.label]]</paper-item>
@@ -101,9 +99,9 @@
 
       <!-- display mode -->
       <div class="menu-section display">
-        <paper-button hidden id="displayModeSlim" on-tap="activateSlimDisplayMode" toggles><iron-icon icon="icons:list"></iron-icon></paper-button>
-        <paper-button hidden id="displayModeList" on-tap="activateListDisplayMode" active toggles><iron-icon icon="icons:view-list"></iron-icon></paper-button>
-        <paper-button hidden id="displayModeCards" on-tap="activateCardDisplayMode" toggles><iron-icon icon="icons:dashboard"></iron-icon></paper-button>
+        <paper-button id="displayModeSlim" on-tap="activateSlimDisplayMode" toggles><iron-icon icon="icons:list"></iron-icon></paper-button>
+        <paper-button id="displayModeList" on-tap="activateListDisplayMode" active toggles><iron-icon icon="icons:view-list"></iron-icon></paper-button>
+        <paper-button id="displayModeCards" on-tap="activateCardDisplayMode" toggles><iron-icon icon="icons:dashboard"></iron-icon></paper-button>
       </div>
     </div>
   </template>
