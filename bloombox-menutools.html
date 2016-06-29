@@ -85,7 +85,7 @@
       <div class="menu-section context">
         <paper-dropdown-menu label="Location" noink no-label-float>
           <paper-listbox class="dropdown-content" selected="{{location}}" attr-for-selected="key">
-            <template is="dom-repeat" items="{{locations}}">
+            <template is="dom-repeat" items="[[locations]]">
               <paper-item key="[[item.key]]">[[item.label]]</paper-item>
             </template>
           </paper-listbox>
