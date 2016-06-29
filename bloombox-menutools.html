@@ -9,6 +9,8 @@
 -->
 
 <link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../iron-iconset-svg/iron-iconset-svg.html">
+<link rel="import" href="../iron-iconset/iron-iconset.html">
 <link rel="import" href="../iron-icons/iron-icons.html">
 <link rel="import" href="../iron-icon/iron-icon.html">
 <link rel="import" href="../paper-item/paper-item.html">
@@ -99,9 +101,9 @@
 
       <!-- display mode -->
       <div class="menu-section display">
-        <paper-button id="displayModeSlim" on-tap="activateSlimDisplayMode" toggles><iron-icon icon="icons:list"></iron-icon></paper-button>
-        <paper-button id="displayModeList" on-tap="activateListDisplayMode" active toggles><iron-icon icon="icons:view-list"></iron-icon></paper-button>
-        <paper-button id="displayModeCards" on-tap="activateCardDisplayMode" toggles><iron-icon icon="icons:dashboard"></iron-icon></paper-button>
+        <paper-button hidden id="displayModeSlim" on-tap="activateSlimDisplayMode" toggles><iron-icon icon="icons:list"></iron-icon></paper-button>
+        <paper-button hidden id="displayModeList" on-tap="activateListDisplayMode" active toggles><iron-icon icon="icons:view-list"></iron-icon></paper-button>
+        <paper-button hidden id="displayModeCards" on-tap="activateCardDisplayMode" toggles><iron-icon icon="icons:dashboard"></iron-icon></paper-button>
       </div>
     </div>
   </template>
