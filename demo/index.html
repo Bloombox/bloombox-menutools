@@ -12,12 +12,16 @@
     <link rel="import" href="../bloombox-menutools.html">
 
     <style is="custom-style" include="demo-pages-shared-styles">
+      body[unresolved] {
+        opacity: 0 !important;
+      }
+
       .vertical-section-container.centered {
         max-width: 700px !important;
       }
     </style>
   </head>
-  <body>
+  <body unresolved>
 
     <div class="vertical-section-container centered">
       <h3>Basic bloombox-menutools Demo</h3>
