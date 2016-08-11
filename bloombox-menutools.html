@@ -38,7 +38,7 @@
 
       .menu-root {
         display: flex;
-        justify-content: center;
+        margin-left: 30px;
       }
 
       .menu-section {
@@ -83,7 +83,7 @@
     <div class="menu-root">
       <!-- context -->
       <div class="menu-section context">
-        <paper-dropdown-menu label="Location" noink no-label-float>
+        <paper-dropdown-menu label="Location" noink no-label-float disabled$="[[!_hasMultipleLocations]]">
           <paper-listbox class="dropdown-content" selected="{{location}}" attr-for-selected="key">
             <template is="dom-repeat" items="[[locations]]">
               <paper-item key="[[item.key]]">[[item.label]]</paper-item>
@@ -94,14 +94,9 @@
 
       <!-- filters -->
       <div class="menu-section filters">
-        <paper-button id="inStock" active="{{instock}}" toggles on-tap="_didToggleInStockOnly">In-Stock Only</paper-button>
-      </div>
+        <paper-button id="inStock" disabled active="{{instock}}" toggles on-tap="_didToggleInStockOnly">In-Stock Only</paper-button>
 
-      <!-- display mode -->
-      <div class="menu-section display">
-        <paper-button id="displayModeSlim" on-tap="activateSlimDisplayMode" toggles><iron-icon icon="icons:list"></iron-icon></paper-button>
-        <paper-button id="displayModeList" on-tap="activateListDisplayMode" active toggles><iron-icon icon="icons:view-list"></iron-icon></paper-button>
-        <paper-button id="displayModeCards" on-tap="activateCardDisplayMode" toggles><iron-icon icon="icons:dashboard"></iron-icon></paper-button>
+        <paper-button id="onSale" disabled active="{{sale}}" toggles on-tap="_didToggleOnSaleOnly">On-Sale Only</paper-button>
       </div>
     </div>
   </template>
@@ -111,6 +106,16 @@
       is: 'bloombox-menutools',
 
       properties: {
+        /**
+         * Observes the length of `locations` and reports whether there are more
+         * than 1, so we may show and hide the location selection UI.
+         */
+        _hasMultipleLocations: {
+          type: Boolean,
+          notify: true,
+          computed: '_computeHasMultipleLocations(locations.length)'
+        },
+
         /**
          * Partner locations that can be selected for menu viewing/editing. This is
          * an array of objects, where each object is a `location` passed in from the
@@ -141,15 +146,22 @@
         },
 
         /**
-         * Display mode setting for menu UI. Options are `list`, `cards`, and
-         * `slim`.
+         * Boolean flag indicating that we only wish to see in-stock items in the
+         * menu viewer/editor.
          */
-        displayMode: {
-          type: String,
+        sale: {
+          type: Boolean,
+          value: false,
           notify: true,
-          value: "list",
           reflectToAttribute: true
         }
+      },
+
+      /**
+       * Computes whether we should show or hide the location selection UI.
+       */
+      _computeHasMultipleLocations: function(count) {
+        return count > 1;
       },
 
       /**
@@ -158,52 +170,16 @@
        */
       _didToggleInStockOnly: function() {
         this.fire("menu-instock-changed");
+        this.fire("menu-filters-changed");
       },
 
       /**
-       * Activate a display mode where menu items are placed in a list-style UI.
+       * UI responder that is executed when the user changes the state of the "show
+       * onsale only" button.
        */
-      activateListDisplayMode: function() {
-        this.fire("menu-displaymode-changed");
-        this.$.displayModeSlim.active = false;
-        this.$.displayModeList.active = true;
-        this.$.displayModeCards.active = false;
-        bloom.app.classList.remove("display-mode-cards");
-        bloom.app.classList.remove("display-mode-slim");
-        bloom.app.classList.add("display-mode-list");
-        this.set("displayMode", "normal");
-      },
-
-      /**
-       * Activate a display mode where menu items are placed in an expanded
-       * card-style UI.
-       */
-      activateSlimDisplayMode: function() {
-        this.fire("menu-displaymode-changed");
-        this.$.displayModeSlim.active = true;
-        this.$.displayModeList.active = false;
-        this.$.displayModeCards.active = false;
-
-        bloom.app.classList.remove("display-mode-cards");
-        bloom.app.classList.remove("display-mode-list");
-        bloom.app.classList.add("display-mode-slim");
-        this.set("displayMode", "slim");
-      },
-
-      /**
-       * Activate a display mode where menu items are placed in a full, naturally-
-       * flowed card style UI.
-       */
-      activateCardDisplayMode: function() {
-        this.fire("menu-displaymode-changed");
-        this.$.displayModeSlim.active = false;
-        this.$.displayModeList.active = false;
-        this.$.displayModeCards.active = true;
-
-        bloom.app.classList.remove("display-mode-slim");
-        bloom.app.classList.remove("display-mode-list");
-        bloom.app.classList.add("display-mode-cards");
-        this.set("displayMode", "normal");
+      _didToggleOnSaleOnly: function() {
+        this.fire("menu-onsale-changed");
+        this.fire("menu-filters-changed");
       }
     });
   </script>
