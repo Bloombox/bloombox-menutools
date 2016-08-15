@@ -9,14 +9,18 @@
 -->
 
 <link rel="import" href="../polymer/polymer.html">
-<link rel="import" href="../iron-iconset-svg/iron-iconset-svg.html">
-<link rel="import" href="../iron-iconset/iron-iconset.html">
+
 <link rel="import" href="../iron-icon/iron-icon.html">
 <link rel="import" href="../iron-icons/iron-icons.html">
+
 <link rel="import" href="../paper-item/paper-item.html">
 <link rel="import" href="../paper-button/paper-button.html">
 <link rel="import" href="../paper-listbox/paper-listbox.html">
+<link rel="import" href="../paper-radio-group/paper-radio-group.html">
+<link rel="import" href="../paper-radio-button/paper-radio-button.html">
 <link rel="import" href="../paper-dropdown-menu/paper-dropdown-menu.html">
+
+<link rel="import" href="../bloombox-icons/bloombox-icons.html">
 <link rel="import" href="../bloombox-styles/bloombox-styles.html">
 
 
@@ -24,21 +28,23 @@
   <template>
     <style is="custom-style" include="bloombox-styles">
       :host {
-        margin-left: 1em;
       }
 
       :host .hidden {
         display: none;
       }
 
-      paper-button[active] {
-        background-color: #4c9d2f;
-        color: white;
+      :host #inStock,
+      :host #onSale {
+        font-size: 10pt;
+        max-height: 30px;
+        position: relative;
+        top: 8px;
+        min-width: 120px;
       }
 
       .menu-root {
         display: flex;
-        margin-left: 30px;
       }
 
       .menu-section {
@@ -49,24 +55,24 @@
         border-right: none;
       }
 
-      #manageLocations {
-        position: relative;
+      .menu-section.context paper-dropdown-menu {
+        margin-right: 20px;
         margin-left: 20px;
-        margin-right: 40px;
       }
 
       .menu-section.filters {
         position: relative;
-        margin-left: 20px;
-      }
-
-      .menu-section.display {
-        position: relative;
-        margin-left: 20px;
       }
 
       :host div.hidden {
         display: none;
+      }
+
+      :host paper-radio-group {
+        border: 1px solid #ddd;
+        margin-left: 10px;
+        min-width: 250px;
+        white-space: nowrap;
       }
 
       paper-tab[link] a {
@@ -83,7 +89,7 @@
     <div class="menu-root">
       <!-- context -->
       <div class="menu-section context">
-        <paper-dropdown-menu label="Location" noink no-label-float disabled$="[[!_hasMultipleLocations]]">
+        <paper-dropdown-menu label="Location" noink no-label-float hidden$="[[!_hasMultipleLocations]]">
           <paper-listbox class="dropdown-content" selected="{{location}}" attr-for-selected="key">
             <template is="dom-repeat" items="[[locations]]">
               <paper-item key="[[item.key]]">[[item.label]]</paper-item>
@@ -94,9 +100,16 @@
 
       <!-- filters -->
       <div class="menu-section filters">
-        <paper-button id="inStock" disabled active="{{instock}}" toggles on-tap="_didToggleInStockOnly">In-Stock Only</paper-button>
-
-        <paper-button id="onSale" disabled active="{{sale}}" toggles on-tap="_didToggleOnSaleOnly">On-Sale Only</paper-button>
+        <paper-button id="inStock" active="{{instock}}" toggles on-tap="_didToggleInStockOnly">In-Stock Only</paper-button>
+        <paper-button id="onSale" active="{{sale}}" toggles on-tap="_didToggleOnSaleOnly">On-Sale Only</paper-button>
+        <paper-radio-group
+          attr-for-selected="name"
+          selected="{{hasTests}}"
+          aria-labelledby="unitLabel">
+          <paper-radio-button name="all">All</paper-radio-button>
+          <paper-radio-button name="tests">Tests</paper-radio-button>
+          <paper-radio-button name="notests">No Tests</paper-radio-button>
+        </paper-radio-group>
       </div>
     </div>
   </template>
@@ -152,6 +165,17 @@
         sale: {
           type: Boolean,
           value: false,
+          notify: true,
+          reflectToAttribute: true
+        },
+
+        /**
+         * Filter state that controls the display of products with, without, or
+         * regardless-of the presence of test data.
+         */
+        hasTests: {
+          type: String,
+          value: "all",
           notify: true,
           reflectToAttribute: true
         }

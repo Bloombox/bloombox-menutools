@@ -22,9 +22,19 @@
     </style>
   </head>
   <body unresolved>
-
     <div class="vertical-section-container centered">
-      <h3>Basic bloombox-menutools Demo</h3>
+      <h3>Basic bloombox-menutools Demo (single location)</h3>
+      <demo-snippet>
+        <template>
+          <bloombox-menutools
+            instock
+            display-mode='normal'
+            locations='[{"phone":"+19163419482","address":{"zip":"95811","address":"1108 R Street #403","state":"CA","longitude":null,"latitude":null,"city":"Sacramento"}]'></bloombox-menutools>
+        </template>
+      </demo-snippet>
+    </div>
+    <div class="vertical-section-container centered">
+      <h3>Basic bloombox-menutools Demo (multiple locations)</h3>
       <demo-snippet>
         <template>
           <bloombox-menutools
@@ -34,6 +44,5 @@
         </template>
       </demo-snippet>
     </div>
-
   </body>
 </html>
