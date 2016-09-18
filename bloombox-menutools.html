@@ -27,20 +27,38 @@
 <dom-module id="bloombox-menutools">
   <template>
     <style is="custom-style" include="bloombox-styles">
-      :host {
-      }
+      :host {}
 
       :host .hidden {
         display: none;
       }
 
       :host #inStock,
-      :host #onSale {
+      :host #onSale,
+      :host #printMenu {
         font-size: 10pt;
         max-height: 30px;
         position: relative;
         top: 8px;
+        color: #333;
+      }
+
+      :host #printMenu:hover,
+      :host #printMenu:active {
+        color: black;
+      }
+
+      :host #inStock,
+      :host #onSale {
         min-width: 120px;
+      }
+
+      :host paper-button[active] {
+        color: white !important;
+      }
+
+      :host #printMenu span {
+        margin-left: 3px;
       }
 
       .menu-root {
@@ -70,9 +88,10 @@
 
       :host paper-radio-group {
         border: 1px solid #ddd;
-        margin-left: 10px;
+        margin: 0 10px;
         min-width: 250px;
         white-space: nowrap;
+        overflow: visible;
       }
 
       paper-tab[link] a {
@@ -96,7 +115,7 @@
             </template>
           </paper-listbox>
         </paper-dropdown-menu>
-      </div>
+      </div><!-- end div.menu-section.context -->
 
       <!-- filters -->
       <div class="menu-section filters">
@@ -104,13 +123,20 @@
         <paper-button id="onSale" active="{{sale}}" toggles on-tap="_didToggleOnSaleOnly">On-Sale Only</paper-button>
         <paper-radio-group
           attr-for-selected="name"
-          selected="{{hasTests}}"
-          aria-labelledby="unitLabel">
+          selected="{{hasTests}}">
           <paper-radio-button name="all">All</paper-radio-button>
           <paper-radio-button name="tests">Tests</paper-radio-button>
           <paper-radio-button name="notests">No Tests</paper-radio-button>
         </paper-radio-group>
-      </div>
+      </div><!-- end div.menu-section.filters -->
+
+      <!-- actions -->
+      <div class="menu-section controls">
+        <paper-button id="printMenu" on-tap="_triggerPrintMenuDialog">
+          <iron-icon icon="print"></iron-icon>
+          <span class="control-button-label">Print</span>
+        </paper-button>
+      </div><!-- end div.menu-section.controls -->
     </div>
   </template>
 
@@ -204,6 +230,37 @@
       _didToggleOnSaleOnly: function() {
         this.fire("menu-onsale-changed");
         this.fire("menu-filters-changed");
+      },
+
+      /**
+       * UI responder that is executed when the user changes the state of filter that
+       * shows or hides products based on whether they have test results.
+       */
+      _didChangeHasTests: function() {
+        this.fire("menu-hastests-changed");
+        this.fire("menu-filters-changed");
+      },
+
+      /**
+       * Dispatched when the user requests to print the menu.
+       */
+      _triggerPrintMenuDialog: function() {
+        console.info("User requested to print the menu...");
+        bloom.menu._showActionDialog("printMenu", function(action, state, dialog) {
+          var printSettingsForm = bloom.menu.$.printMenuSettingsForm,
+              printSettings = printSettingsForm.serialize();
+          if (state === true) {
+            console.log("User confirmed print menu operation.", printSettings);
+            bloom.menu.print(printSettings, function(shouldClose) {
+              if (shouldClose) {
+                dialog.close();
+              }
+            });
+          } else {
+            console.warn("User cancelled print menu operation.");
+          }
+          dialog.close();
+        });
       }
     });
   </script>
