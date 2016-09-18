@@ -208,7 +208,8 @@
           type: Boolean,
           value: true,
           notify: true,
-          reflectToAttribute: true
+          reflectToAttribute: true,
+          observer: '_didToggleInStockOnly'
         },
 
         /**
@@ -219,7 +220,8 @@
           type: Boolean,
           value: false,
           notify: true,
-          reflectToAttribute: true
+          reflectToAttribute: true,
+          observer: '_didToggleOnSaleOnly'
         },
 
         /**
@@ -230,7 +232,8 @@
           type: String,
           value: "all",
           notify: true,
-          reflectToAttribute: true
+          reflectToAttribute: true,
+          observer: '_didChangeHasTests'
         }
       },
 
