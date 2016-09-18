@@ -144,6 +144,33 @@
     Polymer.BloomboxMenutools = Polymer({
       is: 'bloombox-menutools',
 
+      /**
+       * Fired when any filter setting is changed.
+       *
+       * @event menu-filters-changed
+       */
+
+      /**
+       * Fired when the user toggles the *On-Sale Only* button, right before
+       * the general `menu-filters-changed` event.
+       *
+       * @event menu-onsale-changed
+       */
+
+      /**
+       * Fired when the user toggles the *In-Stock Only* button, right before
+       * the general `menu-filters-changed` event.
+       *
+       * @event menu-instock-changed
+       */
+
+      /**
+       * Fired when the user changes their selection in the *Has Tests Only*
+       * radio group, right before the general `menu-filters-changed` event.
+       *
+       * @event menu-hastests-changed
+       */
+
       properties: {
         /**
          * Observes the length of `locations` and reports whether there are more
