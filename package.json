@@ -1,6 +1,6 @@
 {
   "name": "bloombox-menutools",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Provides tools for filtering and editing menu entries.",
   "main": "index.html",
   "repository": {
