@@ -1,6 +1,6 @@
 {
   "name": "bloombox-menutools",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Provides tools for filtering and editing menu entries.",
   "main": "bloombox-menutools.html",
   "dependencies": {
