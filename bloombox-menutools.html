@@ -34,6 +34,7 @@
         display: none;
       }
 
+      :host #isFeatured,
       :host #inStock,
       :host #onSale,
       :host #printMenu,
@@ -52,6 +53,7 @@
         color: black;
       }
 
+      :host #isFeatured,
       :host #inStock,
       :host #onSale {
         min-width: 120px;
@@ -125,6 +127,7 @@
       <div class="menu-section filters">
         <paper-button id="inStock" active="{{instock}}" toggles on-tap="_didToggleInStockOnly">In-Stock Only</paper-button>
         <paper-button id="onSale" active="{{sale}}" toggles on-tap="_didToggleOnSaleOnly">On-Sale Only</paper-button>
+        <paper-button id="isFeatured" active="{{isfeatured}}" toggles on-tap="_didToggleIsFeaturedOnly">Featured Only</paper-button>
         <paper-radio-group
           attr-for-selected="name"
           selected="{{hasTests}}">
@@ -234,6 +237,18 @@
         },
 
         /**
+         * Boolean flag indicating that we only wish to see featured items in the
+         * menu viewer/editor.
+         */
+        isfeatured: {
+          type: Boolean,
+          value: false,
+          notify: true,
+          reflectToAttribute: true,
+          observer: '_didToggleIsFeaturedOnly'
+        },
+
+        /**
          * Filter state that controls the display of products with, without, or
          * regardless-of the presence of test data.
          */
@@ -268,6 +283,16 @@
        */
       _didToggleOnSaleOnly: function() {
         this.fire("menu-onsale-changed");
+        this.fire("menu-filters-changed");
+      },
+
+       /**
+       * UI responder that is executed when the user changes the state of the "show
+       * onsale only" button.
+       */
+      _didToggleIsFeaturedOnly: function() {
+        console.log(this.isfeatured)
+        this.fire("menu-isfeaturedonly-changed");
         this.fire("menu-filters-changed");
       },
 
