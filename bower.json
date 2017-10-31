@@ -5,8 +5,8 @@
   "main": "bloombox-menutools.html",
   "dependencies": {
     "polymer": "Polymer/polymer#^1.5.0",
-    "bloombox-styles": "Bloombox/bloombox-styles",
-    "bloombox-icons": "Bloombox/bloombox-icons",
+    "bloombox-styles": "git@github.com:Bloombox/bloombox-styles.git",
+    "bloombox-icons": "git@github.com:Bloombox/bloombox-icons.git",
     "paper-button": "PolymerElements/paper-button#^1.0.12",
     "paper-listbox": "PolymerElements/paper-listbox#^1.1.2",
     "paper-item": "PolymerElements/paper-item#^1.2.1",
